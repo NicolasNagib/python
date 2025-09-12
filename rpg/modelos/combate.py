@@ -32,7 +32,7 @@ class Ataque:
 def combate(jogador, inimigo):
     while inimigo.saude > 0:
         print(f"""
-            [1] {jogador.ataques[0]}
+            [1] {jogador.ataque}
             [2] Fugir
               """)
         acao = input("Escolha uma ação: ")
@@ -50,6 +50,8 @@ def combate(jogador, inimigo):
         else:
 
             print(f"{inimigo.nome} derrotado com sucesso!!")
+            jogador.receberXp(inimigo.recompensa)
+
             break
         jogador.ataque.tick()
         sleep(.5)

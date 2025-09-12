@@ -28,132 +28,32 @@ def main():
     classe = input("Insira um valor para prosseguir: ")
 
     if classe == "1":
-        print("""
-              Escolha um ataque inicial:
-                [1] Golpe giratório(Múltiplos alvos, tempo de recarga de 2 turnos ,dano 20)
-                [2] Ataque pesado(Alvo único, tempo de recarga de 3 turnos, dano 40)
-                [3] Investida com escudo(Alvo único, chance de atordoamento, tempo de recarga de 1 turno, dano 20)
-              """)
-        ataque_inicial = input("Escolha um ataque inicial: ")
-        if ataque_inicial == "1":
-            ataque_inicial = {
-                "nome" : "Golpe giratório",
-                "dano": 20,
-                'tipo': "fisico",
-                "numero_alvos": "múltiplos alvos",
-                "tempo_recarga": 2,
-                "efeito": ""
-                }
-        elif ataque_inicial == "2":
-            
-            ataque_inicial = {
-                "nome" : "Ataque pesado",
-                "dano": 40,
-                'tipo': "fisico",
-                "numero_alvos": "único",
-                "tempo_recarga": 3,
-                "efeito": ""
-                }
-        elif ataque_inicial == "3":
-             
-            ataque_inicial = {
-                "nome" : "Investida com escudo",
-                "dano": 20,
-                'tipo': "fisico",
-                "numero_alvos": "único",
-                "tempo_recarga": 2,
-                "efeito": "atordoamento"
-                }
-
-        jogador = cp.Cavaleiro(nome, 110, 110, 10, classe, ataque_inicial)
+        
+        jogador = cp.Cavaleiro(nome=nome)
+        jogador.escolherAtaque()
 
     elif classe == "2":
-        print("""
-              Escolha um feitiço inicial:
-                [1] Fúria de Gelmir(Fogo, alvo único, tempo de recarga de 2 turnos, dano 20)
-                [2] Tempestade de gelo de Zamor(Gelo , múltiplos alvos, tempo de recarga de 2 turnos, dano 10)
-                [3] Rancor da morte antiga(Escuridão, alvo único, tempo de recarga de 2 turnos, dano 20)
-              """)
-        magia_inicial = input("Escolha uma magia inicial: ")
-        if magia_inicial == "1":
-            magia_inicial = {
-                "nome" : "Fúria de Gelmir",
-                "dano": 20,
-                'tipo': "Fogo",
-                "numero_alvos": "único",
-                "tempo_recarga": 2,
-                "efeito": "queimadura"
-            }
-        elif magia_inicial == "2":
-            magia_inicial = {
-                "nome" : "Tempestade de gelo de Zamor",
-                "dano": 20,
-                'tipo': "Gelo",
-                "numero_alvos": "Múltiplos alvos",
-                "tempo_recarga": 2,
-                "efeito": "congelar"
-            }
-        elif magia_inicial == "3":
-            magia_inicial = {
-                "nome" : "Rancor da morte antiga",
-                "dano": 20,
-                'tipo': "Escuridão",
-                "numero_alvos": "único",
-                "tempo_recarga": 2,
-                "efeito": ""
-                }
-
-        jogador = cp.Mago(nome, 90, 30, 16, classe, magia_inicial)
+        jogador = cp.Mago(nome=nome)
+        jogador.escolherAtaque()
     
     elif classe == "3":
-        print("""
-              Ecolha uma habilidade inicial:
-                [1] Ataque furtivo(Causa dobro de dano se for o primeiro ataque, tempo de recarga de 1 turno, dano 20)
-                [2] Adaga envenenada(Dano por envenenamento 5 por turno, tempo de recarga 3 turnos, dano 15)
-                [3] Golpe rápido(Ataque primeiro no turno, tempo de recarga 1 turno, dano 15)
-              """)
-        habilidade_inicial = input("Escolha uma habilidade inicial: ")
+        jogador = cp.Bandido(nome=nome)
+        jogador.escolherAtaque()
 
-        if habilidade_inicial == "1":
-            habilidade_inicial = {
-                "nome" : "Ataque furtivo",
-                "dano": 20,
-                'tipo': "Físico",
-                "numero_alvos": "único",
-                "tempo_recarga": 1,
-                "efeito": "dobra"
-        }
-        elif habilidade_inicial == "2":
-            habilidade_inicial = {
-                "nome" : "Adaga envenenada",
-                "dano": 15,
-                'tipo': "Veneno",
-                "numero_alvos": "único",
-                "tempo_recarga": 3,
-                "efeito": "envenenar"
-            }
-        elif habilidade_inicial == "3":
-            habilidade_inicial = {
-                "nome" : "Golpe rápido",
-                "dano": 15,
-                'tipo': "Físico",
-                "numero_alvos": "único",
-                "tempo_recarga": 1,
-                "efeito": "prioridade"
-                }
-
-
-        jogador = cp.Bandido(nome, 100, 50, 9, classe, habilidade_inicial)
     print(jogador)
+    sleep(1)
     print("Iniciando jornada...")
     print("Você é um viajante que chegou chegou recentemente nas terras do reino de Eltoria, um reino que já foi muito abençoado por luz e prosperidade, mas que hoje está cercada por trevas, após o lançamento de uma maldição por um necromante")
     print("Sua jornada se inicia na floresta nebulosa, local de forte presença mágica e criaturas selvagens")
-    goblin = monstros.Goblin("Goblin", 40, 20,"Adaga quebrada", "15XP" ,"Vermelho")
+
+    goblin = monstros.Goblin("Goblin", 40, 20,"Adaga quebrada", 150 ,"Vermelho")
+
     print(f"Ao explorar um pouco a floresta você se depara com um {goblin.nome} {goblin.tipo}!")
     print("Iniciando combate")
 
     combate.combate(jogador, goblin)
 
+'''
     print(f"Após derrotar o goblin, o guerreiro encontra vestígios de um acampamento abandonado — com documentos queimados falando sobre um \"Selo Negro\" e uma torre oculta além das colinas.")
     print("Mais adiante o guerreiro chega a uma vila, e então fala com os moradores locais em busca de alguma pista")
     print("Os moradores comentam sobre a maldição, lançada pelo necromante Malakar")
@@ -228,7 +128,6 @@ def main():
     if jogador.reliquia == "Coração da Luz":
         roteiro.torre_das_cinzas(jogador)
 
+    '''
 if __name__ == "__main__":
     main()
-
-    
