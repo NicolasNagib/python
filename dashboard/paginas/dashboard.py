@@ -47,11 +47,11 @@ def dashboard():
             color_discrete_map=cores
         )
 
-        st.plotly_chart(fig_pizza, use_container_width=True)
+        st.plotly_chart(fig_pizza, width='stretch')
 
         st.subheader("Histórico")
         
         df["data"] = pd.to_datetime(df["data"]).dt.strftime("%d/%m/%Y")
         
         df_exibicao = df.drop(columns=["id"]).reset_index(drop=True)
-        st.dataframe(df_exibicao.sort_values("data", ascending=False), use_container_width=True, hide_index=True)
+        st.dataframe(df_exibicao.sort_values("data", ascending=False), width='stretch', hide_index=True)
