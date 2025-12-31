@@ -1,3 +1,3 @@
-.streamlit/
+.streamlit
 banco.db
-__pycache__/
+__pycache__
