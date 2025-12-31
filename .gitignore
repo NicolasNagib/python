@@ -1,0 +1,3 @@
+dashboard/.streamlit/
+dashboard/banco.db
+dashboard/__pycache__/
