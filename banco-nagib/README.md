@@ -16,6 +16,7 @@ Um mini sistema bancário desenvolvido em Python, para praticar os conceitos de 
     ```bash
     cd banco-nagib
 3. Execute o programa
+   ```bash
     python main.py
 
 ## Adições futuras
