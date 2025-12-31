@@ -1,5 +1,7 @@
+from platform import python_compiler
 import modelos.classesPersonagens as cp
 import modelos.monstros as monstros
+from funcoes.fala import fala
 from time import sleep
 
 class Ataque:
@@ -19,11 +21,11 @@ class Ataque:
         if self.cooldown == 0:
             self.cooldown = self.tempo_recarga
             alvo.receberDano(self.dano)
-            print(f"O {alvo.nome} recebeu {self.dano} de dano! saude atual dele {alvo.saude}")
+            fala(f"O {alvo.nome} recebeu {self.dano} de dano! saude atual dele {alvo.saude}")
 
         else:
             sleep(1)
-            print(f"Não foi possivel realizar o ataque espere o tempo de recarga: {self.cooldown}")
+            fala(f"Não foi possivel realizar o ataque espere o tempo de recarga: {self.cooldown}")
 
     def tick(self):
         if self.cooldown > 0:
@@ -31,7 +33,7 @@ class Ataque:
     
 def combate(jogador, inimigo):
     while inimigo.saude > 0:
-        print(f"""
+        fala(f"""
             [1] {jogador.ataque}
             [2] Fugir
               """)
@@ -40,16 +42,22 @@ def combate(jogador, inimigo):
             sleep(1)
             jogador.atacar(inimigo)
         elif acao == "2":
-            print("Você fugiu com sucesso!!")
+            fala("Você fugiu com sucesso!!")
             break
         
         if inimigo.saude > 0:
             jogador.receberDano(inimigo.dano)
-            sleep(1)
-            print(f"Você recebeu 20 de dano! saude atual {jogador.saude}")
+            if jogador.saude <= 0:
+                fala("Jogador derrotado!")
+                fala("Deseja iniciar um novo jogo?")
+                escolha = input("Escolha(Sim/Não): ").capitalize()
+                if escolha == "Sim":
+                    break
+            else:
+                fala(f"Você recebeu 20 de dano! saude atual {jogador.saude}")
         else:
 
-            print(f"{inimigo.nome} derrotado com sucesso!!")
+            fala(f"{inimigo.nome} derrotado com sucesso!!")
             jogador.receberXp(inimigo.recompensa)
 
             break

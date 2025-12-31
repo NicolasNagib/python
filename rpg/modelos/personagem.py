@@ -1,4 +1,6 @@
+from pdb import Restart
 from modelos.combate import Ataque
+from funcoes.fala import fala
 
 
 class Personagem:
@@ -23,8 +25,15 @@ class Personagem:
         self.manaMaxima = mana
     
     def __str__(self):
-        return f"O seu personagem se chama {self.nome}, ele possui: \nSaúde: {self.saude}HP \nDefesa: {self.defesa}DP \nMana: {self.mana}MP"
+        return f"O seu personagem se chama {self.nome}, ele possui: \n Saúde: {self.saude}HP \n Defesa: {self.defesa}DP \n Mana: {self.mana}MP"
     
+    def escolherAtaque(self, escolha):
+        if isinstance(escolha, int):  # jogador escolhe pelo número
+            return self.ataques[escolha]
+        elif isinstance(escolha, str):  # ou pelo nome/id
+            return next(atk for atk in self.ataques if atk.nome == escolha)
+    
+
     def atacar(self, alvo):
         self.ataque.usar(alvo)
     
@@ -33,13 +42,16 @@ class Personagem:
 
     def receberDano(self, quantidade_dano):
         self.saude -= quantidade_dano
+        
+
     
     def recuperarMana(self, quantidade_mana_recuperada):
         self.mana += quantidade_mana_recuperada
 
+
     def receberXp(self,quantidade):
             self.xpAcumulado += quantidade
-            print(f"Você recebeu {quantidade}Xp!!")
+            fala(f"Você recebeu {quantidade}Xp!!")
             while self.xpAcumulado >= self.xpNecessario:
                 self.subirNivel()
 
@@ -49,7 +61,7 @@ class Personagem:
             self.nivel +=1
             self.xpAcumulado= self.xpAcumulado - self.xpNecessario
             self.xpNecessario = 100*self.nivel**1.5
-            print(f"Você evoluiu de nivel, parabéns agora está no nivel {self.nivel}")
+            fala(f"Você evoluiu de nivel, parabéns agora está no nivel {self.nivel}")
 
             # Melhorando status
             self.saudeMaxima *= 1.5
@@ -58,8 +70,8 @@ class Personagem:
             self.mana  = int(self.manaMaxima)
 
             # Mostrar status
-            print(f"Saúde aumentada! -> {self.saude}Hp")
-            print(f"Mana aumentada!  -> {self.mana}Mp")
+            fala(f"Saúde aumentada! -> {self.saude}Hp")
+            fala(f"Mana aumentada!  -> {self.mana}Mp")
 
     def ver_nivel(self):
-        print(f"Seu nível é {self.nivel}, você possui {self.xpAcumulado}Xp e faltam {self.xpNecessario - self.xpAcumulado}Xp para o próximo nivel")
+        fala(f"Seu nível é {self.nivel}, você possui {self.xpAcumulado}Xp e faltam {self.xpNecessario - self.xpAcumulado}Xp para o próximo nivel")
