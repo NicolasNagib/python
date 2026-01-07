@@ -14,7 +14,7 @@ def adicionar_registro():
     tipo = st.selectbox("Tipo", ["Receita", "Despesa", "Investimento"])
 
     if tipo == "Receita":
-        fonte_opcoes = ["FreeLife", "Entregas(Ifood)", "Sodimac", "Outros"]
+        fonte_opcoes = ["Empresa", "Investimentos", "Extra", "Outros"]
     elif tipo == "Despesa":
         fonte_opcoes = ["Aluguel", "Contas", "Supermercado", "Transporte", "Outros"]
 

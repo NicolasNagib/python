@@ -7,8 +7,6 @@ from funcoes import carregar_dados
 conn = sqlite3.connect("banco.db", check_same_thread=False)
 cursor = conn.cursor()
 
-if "confirmar_acao" not in st.session_state:
-    st.session_state.confirmar_acao = None
 
 
 def converter_valor(valor):
@@ -32,6 +30,8 @@ def atualizar_registro(id_registro, tipo, fonte, valor, data):
 
 
 def gerenciar_registros():
+    if "confirmar_acao" not in st.session_state:
+        st.session_state.confirmar_acao = None
     st.subheader("Gerenciar Registros")
 
     df = carregar_dados()
