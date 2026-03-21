@@ -1,6 +1,6 @@
-import modelos.listaAtaques as la
-from modelos.personagem import Personagem
-from modelos.combate import Ataque
+import data.listaAtaques as la
+from entities.player import Personagem
+from game.combat import Ataque
 
 """
 Classes: 

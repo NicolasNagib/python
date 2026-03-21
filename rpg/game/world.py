@@ -1,4 +1,6 @@
 from funcoes.fala import fala
+from game.combat import combate
+from entities.enemy import Monstro
 
 
 def descobrir_artefatos(jogador):
@@ -16,6 +18,7 @@ def descobrir_artefatos(jogador):
     ]
     fala(texto_artefatos)
     jogador.mapa = True
+    return True
 
 def descobrir_torre(jogador):
     texto_descobrir_torre = [
@@ -23,6 +26,7 @@ def descobrir_torre(jogador):
     ]
     jogador.alarme_torre = True
     fala(texto_descobrir_torre)
+    return True
     
 def templo_chama_viva(jogador):
     texto_templo_chama = [
@@ -55,8 +59,33 @@ def templo_chama_viva(jogador):
 
         "Sua jornada continua..."
     ]
+    # Mostra a parte introdutória antes da luta e, depois que o combate terminar,
+    # apresenta o restante da narrativa.
+    fala(texto_templo_chama[:6])
+
+    fanatico = Monstro(
+        nome="Sacerdote Maníaco",
+        saude=90,
+        dano=18,
+        arma="Fogo Corrompido",
+        recompensa=45,
+    )
+    if not combate(jogador, fanatico):
+        return False
+
+    guardiao = Monstro(
+        nome="Guardião da Chama",
+        saude=160,
+        dano=30,
+        arma="Chamas Sagradas Corrompidas",
+        recompensa=100,
+    )
+    if not combate(jogador, guardiao):
+        return False
+
     jogador.fragmentos.append("Fragmento da Chama Viva")
-    fala(texto_templo_chama)
+    fala(texto_templo_chama[6:])
+    return True
     
 def templo_elgran(jogador):
     texto_templo_elgran = [
@@ -105,8 +134,34 @@ def templo_elgran(jogador):
         "Você corre para fora antes que tudo desmorone."
         "Do alto da montanha congelada, observa ao longe... ainda restam dois fragmentos, e a jornada está longe do fim."
     ]
-    fala(texto_templo_elgran)
+    fala(texto_templo_elgran[:6])
+
+    golem = Monstro(
+        nome="Golem de Gelo",
+        saude=130,
+        dano=24,
+        arma="Punho de Gelo",
+        recompensa=70,
+    )
+    if not combate(jogador, golem):
+        return False
+
+    # A bênção é concedida após a luta contra os golens.
+    jogador.bencao_aguas = True
+
+    elgran = Monstro(
+        nome="Elgran, o Dragão de Gelo",
+        saude=220,
+        dano=40,
+        arma="Fúria Glacial",
+        recompensa=140,
+    )
+    if not combate(jogador, elgran):
+        return False
+
     jogador.fragmentos.append("Fragmento de Elgran")
+    fala(texto_templo_elgran[6:])
+    return True
 
 def ruinas_submersas(jogador):
     texto_ruinas_submersas = [
@@ -149,8 +204,29 @@ def ruinas_submersas(jogador):
         "A água ao redor se purifica, e as ruínas parecem respirar pela primeira vez em séculos."
         "Você retorna à superfície, sentindo-se mais forte... mas também mais próximo do fim."
     ]
+    sirena = Monstro(
+        nome="Sirena Corrompida",
+        saude=120,
+        dano=26,
+        arma="Canto Maldito",
+        recompensa=85,
+    )
+    if not combate(jogador, sirena):
+        return False
+
+    kraken = Monstro(
+        nome="Kraken",
+        saude=260,
+        dano=50,
+        arma="Tentáculos Abissais",
+        recompensa=190,
+    )
+    if not combate(jogador, kraken):
+        return False
+
     jogador.fragmentos.append("Fragmento de Nymor")
     fala(texto_ruinas_submersas)
+    return True
 
 def cripta_lua(jogador):
     texto_cripta_lua_pt1 = [
@@ -174,38 +250,45 @@ def cripta_lua(jogador):
             "Enigma: 'Sou a luz que não brilha, a sombra que ilumina. Quando caio, tudo dorme. Quem sou eu?'"
         ]
     fala(texto_cripta_lua_pt1)
-    resposta = input(fala("Sua resposta: ")).strip().lower()
+    resposta = input("Sua resposta: ").strip().lower()
 
     if resposta in ["lua", "a lua"]:
-        texto_cripta_lua_pt2= ["Os símbolos brilham brevemente com luz prateada. A porta se abre."]
-        fala(texto_cripta_lua_pt2)
+        fala(["Os símbolos brilham brevemente com luz prateada. A porta se abre."])
     else:
-        texto_cripta_lua_pt2 = [
-            "Nada acontece. Uma força te empurra para trás. Você tenta novamente até acertar."
-            # Poderia repetir ou forçar combate adicional
+        fala(
+            [
+                "Nada acontece. Uma força te empurra para trás. Você tenta novamente até acertar.",
+            ]
+        )
 
-            "Atravessando a porta, você encontra um salão circular com vitrais quebrados e um altar negro."
-            "No centro, uma figura encapuzada, de costas para você, murmura palavras sombrias."
+    sacerdote = Monstro(
+        nome="Sacerdote da Lua Corrompido",
+        saude=240,
+        dano=42,
+        arma="Magia Lunar Corrompida",
+        recompensa=170,
+    )
+    if not combate(jogador, sacerdote):
+        return False
 
-            "??? : 'A Deusa da Lua os abandonou... mas eu? Eu os ouvi. Eu dei poder a eles.'"
-            "O ser se vira — é um antigo sacerdote, agora completamente deformado pela magia negra."
+    jogador.fragmentos.append("Fragmento da Lua Quebrada")
 
-            "Sacerdote Caído: 'Não deixarei que leve a última centelha de luz.'"
-
-            "Inicia-se o combate contra o **Sacerdote da Lua Corrompido**!"
-
-        # combate.combate(jogador, sacerdote)
-
-            "O sacerdote ataca com feitiços lunares corrompidos, invoca almas e manipula a escuridão para confundir você."
-            "Mas ao ser derrotado, ele olha para o céu, e por um segundo... a lua ressurge através de uma fresta no teto."
-
-            "Uma última luz ilumina o altar. Você caminha até ele e encontra o **último Fragmento da Luz**."
-
-            "Você obteve: Fragmento da Luz (4/4)"
-            "A Cripta começa a tremer, como se a própria terra rejeitasse as trevas ali existentes."
-            "Você foge por um túnel lateral enquanto o santuário desmorona, levando os horrores consigo."]
-        jogador.fragmentos.append("Fragmento da Lua Quebrada")
-        fala(texto_cripta_lua_pt2)
+    texto_cripta_lua_pt2 = [
+        "Atravessando a porta, você encontra um salão circular com vitrais quebrados e um altar negro.",
+        "No centro, uma figura encapuzada, de costas para você, murmura palavras sombrias.",
+        "??? : 'A Deusa da Lua os abandonou... mas eu? Eu os ouvi. Eu dei poder a eles.'",
+        "O ser se vira — é um antigo sacerdote, agora completamente deformado pela magia negra.",
+        "Sacerdote Caído: 'Não deixarei que leve a última centelha de luz.'",
+        "Inicia-se o combate contra o **Sacerdote da Lua Corrompido**!",
+        "O sacerdote ataca com feitiços lunares corrompidos, invoca almas e manipula a escuridão para confundir você.",
+        "Mas ao ser derrotado, ele olha para o céu, e por um segundo... a lua ressurge através de uma fresta no teto.",
+        "Uma última luz ilumina o altar. Você caminha até ele e encontra o **último Fragmento da Luz**.",
+        "Você obteve: Fragmento da Luz (4/4)",
+        "A Cripta começa a tremer, como se a própria terra rejeitasse as trevas ali existentes.",
+        "Você foge por um túnel lateral enquanto o santuário desmorona, levando os horrores consigo.",
+    ]
+    fala(texto_cripta_lua_pt2)
+    return True
 
 def torres_das_cinzas(jogador):
    texto_torre_das_cinzas = [
@@ -231,4 +314,15 @@ def torres_das_cinzas(jogador):
         "Muito obrigado por ter jogado até aqui espero que tenha gostado!"
    ] 
    
+   malakar = Monstro(
+       nome="Malakar",
+       saude=360,
+       dano=55,
+       arma="Vontade Negra",
+       recompensa=260,
+   )
+   if not combate(jogador, malakar):
+       return False
+
    fala(texto_torre_das_cinzas)
+   return True

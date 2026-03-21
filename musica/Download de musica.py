@@ -2,11 +2,6 @@ from pytubefix import *
 from moviepy import VideoFileClip
 import os
 
-
-
-    
-
-
 print("=-"*20)
 print("Programa de dowload de músicas")
 print("=-"*20)
@@ -55,5 +50,4 @@ elif escolha == "3":
         
         video.close()  # Fecha o objeto para liberar o arquivo
         os.remove(video_path)
-        
         n += 1

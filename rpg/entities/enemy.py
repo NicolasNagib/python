@@ -10,9 +10,10 @@ class Monstro:
         return f"O {self.nome} possui {self.saude}HP"
 
     def receberDano(self, quantidade_dano):
-        self.saude -= quantidade_dano
-        if self.saude < 0:
-            self.saude = 0
+        quantidade_dano = int(quantidade_dano)
+        dano_aplicado = min(self.saude, quantidade_dano)
+        self.saude -= dano_aplicado
+        return dano_aplicado
 
 class Goblin(Monstro):
     def __init__(self, nome, saude, dano, arma, recompensa, tipo):

@@ -1,6 +1,3 @@
-from platform import python_compiler
-import modelos.classesPersonagens as cp
-import modelos.monstros as monstros
 from funcoes.fala import fala
 from time import sleep
 
@@ -20,8 +17,11 @@ class Ataque:
     def usar(self, alvo):
         if self.cooldown == 0:
             self.cooldown = self.tempo_recarga
-            alvo.receberDano(self.dano)
-            fala(f"O {alvo.nome} recebeu {self.dano} de dano! saude atual dele {alvo.saude}")
+            dano_aplicado = alvo.receberDano(self.dano)
+            fala(
+                f"O {alvo.nome} recebeu {dano_aplicado} de dano! "
+                f"saude atual dele {alvo.saude}"
+            )
 
         else:
             sleep(1)
@@ -31,35 +31,45 @@ class Ataque:
         if self.cooldown > 0:
             self.cooldown -= 1
     
-def combate(jogador, inimigo):
-    while inimigo.saude > 0:
-        fala(f"""
-            [1] {jogador.ataque}
+def combate(jogador, inimigo) -> bool:
+    """
+    Retorna:
+      True  -> inimigo derrotado
+      False -> player fugiu / morreu
+    """
+    while inimigo.saude > 0 and jogador.saude > 0:
+        ataque_txt = getattr(jogador.ataque, "nome", None) or "nenhum ataque selecionado"
+        fala(
+            f"""
+            [1] {ataque_txt}
             [2] Fugir
-              """)
+            """
+        )
         acao = input("Escolha uma ação: ")
         if acao == "1":
             sleep(1)
             jogador.atacar(inimigo)
         elif acao == "2":
             fala("Você fugiu com sucesso!!")
-            break
+            return False
+        else:
+            fala("Ação inválida. Tente novamente.")
+            sleep(0.5)
+            continue
         
         if inimigo.saude > 0:
-            jogador.receberDano(inimigo.dano)
+            dano_aplicado = jogador.receberDano(inimigo.dano)
             if jogador.saude <= 0:
                 fala("Jogador derrotado!")
-                fala("Deseja iniciar um novo jogo?")
-                escolha = input("Escolha(Sim/Não): ").capitalize()
-                if escolha == "Sim":
-                    break
             else:
-                fala(f"Você recebeu 20 de dano! saude atual {jogador.saude}")
+                fala(f"Você recebeu {dano_aplicado} de dano! saude atual {jogador.saude}")
         else:
-
             fala(f"{inimigo.nome} derrotado com sucesso!!")
             jogador.receberXp(inimigo.recompensa)
+            return True
 
-            break
-        jogador.ataque.tick()
+        if getattr(jogador, "ataque", None) is not None:
+            jogador.ataque.tick()
         sleep(.5)
+
+    return False
