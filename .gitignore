@@ -1,3 +1,6 @@
 dashboard/.streamlit/
 dashboard/banco.db
 dashboard/__pycache__/
+
+To-do-list/db_toDoList.db
+url_shortener/db_url_shortener.db
