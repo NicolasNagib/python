@@ -99,7 +99,7 @@ with col1:
         if submit_button:
             processRequest(title, url='http://127.0.0.1:5000/')
         
-    with st.container(border=True, autoscroll=True, height=300):
+    with st.container(border=True, height=300):
         st.header("Tarefas:")
         response = requests.get("http://127.0.0.1:5000/loadItems")
         if response.status_code == 404:
